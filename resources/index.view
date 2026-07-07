@@ -1,0 +1,28 @@
+<svg>
+  <defs>
+    <link rel="stylesheet" href="styles.css" />
+  </defs>
+
+  <rect class="background" x="0" y="0" width="100%" height="100%" />
+
+  <!-- Clock -->
+  <text id="timeLabel" class="time" x="50%" y="18%">--:--</text>
+  <text id="dateLabel" class="date" x="50%" y="26%">---</text>
+
+  <!-- Stat grid: two columns -->
+  <text class="label"  x="12%" y="42%">STEPS</text>
+  <text id="stepsValue" class="value" x="12%" y="50%">0</text>
+
+  <text class="label"  x="58%" y="42%">HEART</text>
+  <text id="hrValue"    class="value" x="58%" y="50%">--</text>
+
+  <text class="label"  x="12%" y="62%">CALS</text>
+  <text id="calsValue" class="value" x="12%" y="70%">0</text>
+
+  <text class="label"  x="58%" y="62%">DIST</text>
+  <text id="distValue" class="value" x="58%" y="70%">0.0km</text>
+
+  <!-- Weather + battery -->
+  <text id="weatherValue" class="weather" x="50%" y="84%">Weather --</text>
+  <text id="battValue"    class="batt"    x="50%" y="92%">--%</text>
+</svg>

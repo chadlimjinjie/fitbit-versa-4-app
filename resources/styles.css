@@ -1,0 +1,47 @@
+/* Global */
+.background {
+  fill: #000000;
+}
+
+text {
+  text-anchor: middle;
+  fill: #ffffff;
+}
+
+.time {
+  font-family: System-Bold;
+  font-size: 60;
+  fill: #ffffff;
+}
+
+.date {
+  font-family: System-Regular;
+  font-size: 26;
+  fill: #8a8a8a;
+}
+
+.label {
+  font-family: System-Regular;
+  font-size: 20;
+  fill: #1fb0e6;
+  text-anchor: start;
+}
+
+.value {
+  font-family: System-Bold;
+  font-size: 34;
+  fill: #ffffff;
+  text-anchor: start;
+}
+
+.weather {
+  font-family: System-Regular;
+  font-size: 26;
+  fill: #f5d76e;
+}
+
+.batt {
+  font-family: System-Regular;
+  font-size: 20;
+  fill: #8a8a8a;
+}

@@ -1,0 +1,3 @@
+{
+  "extends": "@fitbit/sdk/sdk-tsconfig.json"
+}
