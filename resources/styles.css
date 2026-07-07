@@ -50,11 +50,12 @@ text {
 /* shadcn "default" button (dark-mode): near-white surface, near-black label */
 .btn {
   fill: #fafafa;
+  border-radius: 14;
 }
 
 .btn-label {
   font-family: System-Bold;
-  font-size: 22;
+  font-size: 28;
   fill: #18181b;
 }
 

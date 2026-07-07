@@ -39,9 +39,10 @@
   <g id="page2" display="none">
     <text class="page-title" x="50%" y="26%">DISCORD</text>
 
-    <rect id="sendBtn" class="btn" x="16%" y="45%" width="68%" height="12%" rx="6"
+    <!-- CSS border-radius experiment: single rect, rounding via stylesheet -->
+    <rect id="sendBtn" class="btn" x="38" y="138" width="260" height="60"
           pointer-events="visible" />
-    <text class="btn-label" x="50%" y="53%" pointer-events="none">Send to Discord</text>
+    <text class="btn-label" x="168" y="178" pointer-events="none">Send to Discord</text>
 
     <text id="sendStatus" class="send-status" x="50%" y="72%"></text>
   </g>
