@@ -14,6 +14,11 @@ import { MessageType } from "../common/messages";
 
 const OPEN_METEO_ENDPOINT = "https://api.open-meteo.com/v1/forecast";
 
+// Discord incoming webhook. Lives only on the companion (has internet); the
+// device never sees this URL.
+const DISCORD_WEBHOOK_URL =
+  "https://discord.com/api/webhooks/1523867220235653212/7NIRHf30nxEKK6rExIn53ljShQl_RTR3jMMV4id3-B58c1T5DKJDiw6PSNfp1Jl-TF2F";
+
 // Compact labels for the WMO weather-interpretation codes Open-Meteo returns.
 // https://open-meteo.com/en/docs -> "Weather variable documentation".
 function conditionForCode(code) {
@@ -80,11 +85,31 @@ function fetchWeather() {
   );
 }
 
+// --- Discord webhook --------------------------------------------------------
+function sendDiscord() {
+  fetch(DISCORD_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content: "Hello from Versa 4" }),
+  })
+    .then((res) => {
+      // Discord returns 204 No Content on success.
+      if (!res.ok) throw new Error(`http ${res.status}`);
+      send({ type: MessageType.DiscordSent });
+    })
+    .catch((err) => {
+      console.log(`discord error: ${err.message}`);
+      send({ type: MessageType.DiscordError, reason: err.message });
+    });
+}
+
 // A device peer asking for weather is the main trigger.
 messaging.peerSocket.addEventListener("message", (evt) => {
   const msg = evt.data;
   if (msg.type === MessageType.RequestWeather) {
     fetchWeather();
+  } else if (msg.type === MessageType.SendDiscord) {
+    sendDiscord();
   }
 });
 

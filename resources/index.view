@@ -5,24 +5,48 @@
 
   <rect class="background" x="0" y="0" width="100%" height="100%" />
 
-  <!-- Clock -->
-  <text id="timeLabel" class="time" x="50%" y="18%">--:--</text>
-  <text id="dateLabel" class="date" x="50%" y="26%">---</text>
+  <!-- Swipe / gesture layer: full-screen, sits just above the background so it
+       catches swipes on empty areas. Interactive elements (the button) are
+       drawn later and therefore above it, so they keep their own taps. -->
+  <rect id="gestureLayer" x="0" y="0" width="100%" height="100%"
+        opacity="0" pointer-events="visible" />
 
-  <!-- Stat grid: two columns -->
-  <text class="label"  x="12%" y="42%">STEPS</text>
-  <text id="stepsValue" class="value" x="12%" y="50%">0</text>
+  <!-- Page 1: clock + stats -->
+  <g id="page1">
+    <!-- Clock -->
+    <text id="timeLabel" class="time" x="50%" y="18%">--:--</text>
+    <text id="dateLabel" class="date" x="50%" y="26%">---</text>
 
-  <text class="label"  x="58%" y="42%">HEART</text>
-  <text id="hrValue"    class="value" x="58%" y="50%">--</text>
+    <!-- Stat grid: two columns -->
+    <text class="label"  x="12%" y="42%">STEPS</text>
+    <text id="stepsValue" class="value" x="12%" y="50%">0</text>
 
-  <text class="label"  x="12%" y="62%">CALS</text>
-  <text id="calsValue" class="value" x="12%" y="70%">0</text>
+    <text class="label"  x="58%" y="42%">HEART</text>
+    <text id="hrValue"    class="value" x="58%" y="50%">--</text>
 
-  <text class="label"  x="58%" y="62%">DIST</text>
-  <text id="distValue" class="value" x="58%" y="70%">0.0km</text>
+    <text class="label"  x="12%" y="62%">CALS</text>
+    <text id="calsValue" class="value" x="12%" y="70%">0</text>
 
-  <!-- Weather + battery -->
-  <text id="weatherValue" class="weather" x="50%" y="84%">Weather --</text>
-  <text id="battValue"    class="batt"    x="50%" y="92%">--%</text>
+    <text class="label"  x="58%" y="62%">DIST</text>
+    <text id="distValue" class="value" x="58%" y="70%">0.0km</text>
+
+    <!-- Weather + battery -->
+    <text id="weatherValue" class="weather" x="50%" y="84%">Weather --</text>
+    <text id="battValue"    class="batt"    x="50%" y="92%">--%</text>
+  </g>
+
+  <!-- Page 2: Discord button (hidden until swiped to) -->
+  <g id="page2" display="none">
+    <text class="page-title" x="50%" y="26%">DISCORD</text>
+
+    <rect id="sendBtn" class="btn" x="16%" y="45%" width="68%" height="12%" rx="6"
+          pointer-events="visible" />
+    <text class="btn-label" x="50%" y="53%" pointer-events="none">Send to Discord</text>
+
+    <text id="sendStatus" class="send-status" x="50%" y="72%"></text>
+  </g>
+
+  <!-- Page dots -->
+  <circle id="dot1" class="dot" cx="46%" cy="96%" r="6" />
+  <circle id="dot2" class="dot" cx="54%" cy="96%" r="6" />
 </svg>

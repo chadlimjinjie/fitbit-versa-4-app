@@ -45,3 +45,36 @@ text {
   font-size: 20;
   fill: #8a8a8a;
 }
+
+/* Page 2 */
+/* shadcn "default" button (dark-mode): near-white surface, near-black label */
+.btn {
+  fill: #fafafa;
+}
+
+.btn-label {
+  font-family: System-Bold;
+  font-size: 22;
+  fill: #18181b;
+}
+
+.page-title {
+  font-family: System-Bold;
+  font-size: 30;
+  fill: #1fb0e6;
+}
+
+.send-status {
+  font-family: System-Regular;
+  font-size: 26;
+  fill: #8a8a8a;
+}
+
+/* Page dots */
+.dot {
+  fill: #555555;
+}
+
+.dot-active {
+  fill: #1fb0e6;
+}

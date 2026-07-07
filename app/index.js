@@ -24,6 +24,15 @@ const distLabel = document.getElementById("distValue");
 const battLabel = document.getElementById("battValue");
 const weatherLabel = document.getElementById("weatherValue");
 
+// Paging (page 1 = stats, page 2 = Discord button)
+const page1 = document.getElementById("page1");
+const page2 = document.getElementById("page2");
+const dot1 = document.getElementById("dot1");
+const dot2 = document.getElementById("dot2");
+const gestureLayer = document.getElementById("gestureLayer");
+const sendBtn = document.getElementById("sendBtn");
+const sendStatus = document.getElementById("sendStatus");
+
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -98,6 +107,57 @@ if (HeartRateSensor && appbit.permissions.granted("access_heart_rate")) {
   hrLabel.text = "--";
 }
 
+// --- Paging + swipe ---------------------------------------------------------
+// Fitbit has no native swipe event, so we detect a horizontal drag on a
+// full-screen gesture layer: record the touch-down X and compare on release.
+const SWIPE_THRESHOLD = 60; // px of horizontal travel to count as a swipe
+let currentPage = 0;
+let swipeStartX = null;
+
+function showPage(n) {
+  currentPage = n < 0 ? 0 : n > 1 ? 1 : n;
+  page1.style.display = currentPage === 0 ? "inline" : "none";
+  page2.style.display = currentPage === 1 ? "inline" : "none";
+  dot1.class = currentPage === 0 ? "dot-active" : "dot";
+  dot2.class = currentPage === 1 ? "dot-active" : "dot";
+}
+
+gestureLayer.addEventListener("mousedown", (evt) => {
+  swipeStartX = evt.screenX;
+});
+
+gestureLayer.addEventListener("mouseup", (evt) => {
+  if (swipeStartX == null) return;
+  const dx = evt.screenX - swipeStartX;
+  swipeStartX = null;
+  if (dx <= -SWIPE_THRESHOLD) showPage(currentPage + 1); // swipe left -> next
+  else if (dx >= SWIPE_THRESHOLD) showPage(currentPage - 1); // swipe right -> prev
+});
+
+showPage(0);
+
+// --- Discord button ---------------------------------------------------------
+let statusTimer = null;
+
+function setSendStatus(text) {
+  sendStatus.text = text;
+  if (statusTimer) clearTimeout(statusTimer);
+  if (text && text !== "Sending...") {
+    statusTimer = setTimeout(() => {
+      sendStatus.text = "";
+    }, 3000);
+  }
+}
+
+sendBtn.addEventListener("click", () => {
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    messaging.peerSocket.send({ type: MessageType.SendDiscord });
+    setSendStatus("Sending...");
+  } else {
+    setSendStatus("No phone");
+  }
+});
+
 // --- Weather over messaging -------------------------------------------------
 function requestWeather() {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
@@ -115,6 +175,12 @@ messaging.peerSocket.addEventListener("message", (evt) => {
       break;
     case MessageType.WeatherError:
       weatherLabel.text = "Weather --";
+      break;
+    case MessageType.DiscordSent:
+      setSendStatus("Sent!");
+      break;
+    case MessageType.DiscordError:
+      setSendStatus("Failed");
       break;
   }
 });
