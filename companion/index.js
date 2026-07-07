@@ -86,11 +86,32 @@ function fetchWeather() {
 }
 
 // --- Discord webhook --------------------------------------------------------
-function sendDiscord() {
+// Build a Discord embed from the stats snapshot the device sent.
+function statsEmbed(stats) {
+  const s = stats || {};
+  const km = s.distance != null ? (s.distance / 1000).toFixed(2) : null;
+  return {
+    title: "Versa 4 Stats",
+    color: 0x5865f2, // Discord blurple
+    fields: [
+      { name: "Steps", value: `${s.steps != null ? s.steps : "--"}`, inline: true },
+      {
+        name: "Heart Rate",
+        value: s.heartRate != null ? `${s.heartRate} bpm` : "--",
+        inline: true,
+      },
+      { name: "Calories", value: `${s.calories != null ? s.calories : "--"}`, inline: true },
+      { name: "Distance", value: km != null ? `${km} km` : "--", inline: true },
+    ],
+    timestamp: new Date().toISOString(),
+  };
+}
+
+function sendDiscord(stats) {
   fetch(DISCORD_WEBHOOK_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ content: "Hello from Versa 4" }),
+    body: JSON.stringify({ embeds: [statsEmbed(stats)] }),
   })
     .then((res) => {
       // Discord returns 204 No Content on success.
@@ -109,7 +130,7 @@ messaging.peerSocket.addEventListener("message", (evt) => {
   if (msg.type === MessageType.RequestWeather) {
     fetchWeather();
   } else if (msg.type === MessageType.SendDiscord) {
-    sendDiscord();
+    sendDiscord(msg.stats);
   }
 });
 

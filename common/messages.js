@@ -7,7 +7,7 @@
  * Companion -> Device : { type: WeatherData, temp, unit, condition, location }
  * Companion -> Device : { type: WeatherError, reason }
  *
- * Device  -> Companion: { type: SendDiscord }
+ * Device  -> Companion: { type: SendDiscord, stats: { steps, heartRate, calories, distance } }
  * Companion -> Device : { type: DiscordSent }
  * Companion -> Device : { type: DiscordError, reason }
  */

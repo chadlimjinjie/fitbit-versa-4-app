@@ -19,16 +19,16 @@
 
     <!-- Stat grid: two columns -->
     <text class="label"  x="12%" y="42%">STEPS</text>
-    <text id="stepsValue" class="value" x="12%" y="50%">0</text>
+    <text href="#text" id="stepsValue" class="value" x="12%" y="50%">000</text>
 
     <text class="label"  x="58%" y="42%">HEART</text>
-    <text id="hrValue"    class="value" x="58%" y="50%">--</text>
+    <text href="#text" id="hrValue"    class="value" x="58%" y="50%">--</text>
 
     <text class="label"  x="12%" y="62%">CALS</text>
-    <text id="calsValue" class="value" x="12%" y="70%">0</text>
+    <text href="#text" id="calsValue" class="value" x="12%" y="70%">000</text>
 
     <text class="label"  x="58%" y="62%">DIST</text>
-    <text id="distValue" class="value" x="58%" y="70%">0.0km</text>
+    <text href="#text" id="distValue" class="value" x="58%" y="70%">0.0km</text>
 
     <!-- Weather + battery -->
     <text id="weatherValue" class="weather" x="50%" y="84%">Weather --</text>

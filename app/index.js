@@ -83,10 +83,14 @@ function refreshActivity() {
 }
 
 // --- Heart rate (only reads while the watch is on the wrist) ----------------
+// Latest reading is cached so the Discord snapshot can include it.
+let currentHeartRate = null;
+
 if (HeartRateSensor && appbit.permissions.granted("access_heart_rate")) {
   const hrm = new HeartRateSensor({ frequency: 1 });
   hrm.addEventListener("reading", () => {
-    hrLabel.text = hrm.heartRate != null ? `${hrm.heartRate}` : "--";
+    currentHeartRate = hrm.heartRate != null ? hrm.heartRate : null;
+    hrLabel.text = currentHeartRate != null ? `${currentHeartRate}` : "--";
   });
 
   if (BodyPresenceSensor) {
@@ -96,6 +100,7 @@ if (HeartRateSensor && appbit.permissions.granted("access_heart_rate")) {
         hrm.start();
       } else {
         hrm.stop();
+        currentHeartRate = null;
         hrLabel.text = "--";
       }
     });
@@ -105,6 +110,17 @@ if (HeartRateSensor && appbit.permissions.granted("access_heart_rate")) {
   }
 } else {
   hrLabel.text = "--";
+}
+
+// Snapshot of the live stats to ship to the companion for the Discord embed.
+function currentStats() {
+  const t = appbit.permissions.granted("access_activity") ? today.adjusted : {};
+  return {
+    steps: t.steps || 0,
+    calories: t.calories || 0,
+    distance: t.distance || 0, // metres
+    heartRate: currentHeartRate,
+  };
 }
 
 // --- Paging + swipe ---------------------------------------------------------
@@ -151,7 +167,7 @@ function setSendStatus(text) {
 
 sendBtn.addEventListener("click", () => {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send({ type: MessageType.SendDiscord });
+    messaging.peerSocket.send({ type: MessageType.SendDiscord, stats: currentStats() });
     setSendStatus("Sending...");
   } else {
     setSendStatus("No phone");
